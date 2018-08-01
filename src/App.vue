@@ -27,6 +27,7 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import '@/assets/css/vars.scss';
+@import '@/assets/css/base.scss';
 
 html, body {
   margin: 0;
@@ -35,9 +36,7 @@ html, body {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  @extend %font1;
   height: inherit; 
   // text-align: center;
   // color: #2c3e50;
@@ -54,6 +53,7 @@ html, body {
 @media screen and (max-width: $mobile-width) {
   .content {
     padding: 1.5rem 2rem;
+    padding-bottom: 2rem;
   }
 }
 </style>

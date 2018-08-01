@@ -8,8 +8,15 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
+      redirect: {
+        path: '/home/1'
+      }
+    },
+    {
+      path: '/home/:page',
+      name: 'home-page',
       component: Home,
     },
     {

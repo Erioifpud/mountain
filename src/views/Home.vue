@@ -1,43 +1,68 @@
 <template>
   <div class="home">
     <!-- <p class="name">Articles</p> -->
-    <loading></loading>
-    <div class="article" v-for="article in articleList" :key="article.id">
-      <span class="a-section">
-        <div class="a-title">{{ article.title }}</div>
-        <div class="a-summary">{{ article.content }}</div>
-        <div class="a-footer">
-          <label class="a-date">{{ createTime(article.creationTime) }}</label>
-          <a class="a-tag" v-for="tag in article.tags" :key="tag.id">{{ tag.name }}</a>
-        </div>
-      </span>
+    <div class="article-list">
+      <loading :show="show"></loading>
+      <article-section 
+        class="article-section"
+        v-for="article in articleSlice" 
+        :key="article.id"
+        :article="article"
+      />
     </div>
-
+    <paging 
+      :total="articleList.length || 0"
+      :countPerPage="articlePerPage"
+      v-model="currentPage"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Loading from '@/components/Loading'
+import ArticleSection from '@/components/ArticleSection'
+import Paging from '@/components/Paging'
 import Article from '@/interfaces.ts'
-import * as moment from 'moment'
+
 
 @Component({
   components: {
-    Loading
+    Loading,
+    ArticleSection,
+    Paging
   }
 })
 export default class Home extends Vue {
   public articleList: Article[] = []
+  public show: boolean = true
+  public articlePerPage: number = 5
+  public currentPage: number = 1
 
-  private createTime (timestamp: number) {
-    return moment(timestamp).format('YYYY-MM-DD')
+  get articleSlice () {
+    const page = this.currentPage - 1
+    const start = this.articlePerPage * page
+    return this.articleList.slice(start, start + this.articlePerPage)
+  }
+
+  public updatePage (val: number) {
+    this.currentPage = val
+  }
+
+  public initPage () {
+    const page = parseInt(this.$route.params.page, 10) || 1
+    if (page >= 1 && page < this.articleList.length) {
+      this.currentPage = page
+      console.log(this.currentPage)
+    }
   }
 
   private mounted () {
     this.$ax.get('https://cciradih.top/articles/')
       .then((r: any) => {
         this.articleList = r.data
+        this.show = false
+        this.initPage()
       })
   }
 }
@@ -46,75 +71,24 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 @import '@/assets/css/vars.scss';
 
-.home {
+.article-list {
   width: 100%;
   height: 100%;
   padding: 1.5rem 2.5rem;
   box-sizing: border-box;
   background-color: #fff;
-  box-shadow: 0 5px 10px darken(#4fc1ff, 10%);
+  box-shadow: 0 5px 10px darken($color1, 10%);
+
   .name {
     font-size: 1.25rem;
     font-weight: 450;
   }
 }
 
-.article {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #f2f2f2;
-
-  & * {
-    margin-bottom: 0.5rem;
-  }
-  .a-section {
-    .a-title::before {
-      content: '◇';
-      letter-spacing: 0.5rem;
-      color: #e74c3c;
-    }
-
-    .a-title {
-      vertical-align: middle;
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: #34495e;
-      // margin-bottom: 0.5rem;
-    }
-
-    .a-summary {
-      font-size: 0.9rem;
-      color: #485e74;
-      margin-bottom: 1rem;
-    }
-
-    .a-footer {
-      color: $color8;
-
-      .a-tag {
-        cursor: pointer;
-        margin-right: 0.5rem;
-        transition: color 0.25s ease-in-out;
-
-        &::before {
-          content: '#';
-        }
-        &:hover {
-          color: $color7;
-        }
-      }
-      .a-date {
-        margin-right: 1rem;
-        &::before {
-          content: '◎';
-          letter-spacing: 0.25rem;
-        }
-      }
-    }
-  }
-
-  .a-right-section {
-    width: 10%;
+.article-section {
+  &:not(:last-of-type) {
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 2rem;
   }
 }
 </style>
