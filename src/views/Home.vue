@@ -3,12 +3,14 @@
     <!-- <p class="name">Articles</p> -->
     <div class="article-list">
       <loading :show="show"></loading>
-      <article-section 
-        class="article-section"
-        v-for="article in articleSlice" 
-        :key="article.id"
-        :article="article"
-      />
+      <!-- <transition name="slide-fade"> -->
+        <article-section 
+          class="article-section"
+          v-for="article in articleSlice" 
+          :key="article.id"
+          :article="article"
+        />
+      <!-- </transition> -->
     </div>
     <paging 
       :total="articleList.length || 0"
@@ -19,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import Loading from '@/components/Loading'
 import ArticleSection from '@/components/ArticleSection'
 import Paging from '@/components/Paging'
@@ -45,16 +47,29 @@ export default class Home extends Vue {
     return this.articleList.slice(start, start + this.articlePerPage)
   }
 
+  get maxPage () {
+    return Math.ceil(this.articleList.length / this.articlePerPage)
+  }
+
   public updatePage (val: number) {
     this.currentPage = val
   }
 
   public initPage () {
-    const page = parseInt(this.$route.params.page, 10) || 1
-    if (page >= 1 && page < this.articleList.length) {
-      this.currentPage = page
-      console.log(this.currentPage)
+    let page = parseInt(this.$route.params.page, 10)
+    if (page < 1) {
+      this.$router.replace('/home/1')
+      page = 1
+    } else if (page > this.maxPage) {
+      this.$router.replace(`/home/${this.maxPage}`)
+      page = this.maxPage
     }
+    this.currentPage = page
+  }
+
+  @Watch('currentPage')
+  public currentPageUpdate (val: number) {
+    this.$router.replace(`/home/${val}`)
   }
 
   private mounted () {
@@ -90,6 +105,18 @@ export default class Home extends Vue {
     border-bottom: 1px solid #f2f2f2;
     margin-bottom: 2rem;
   }
+}
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
 

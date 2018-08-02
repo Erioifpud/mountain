@@ -61,19 +61,19 @@ export default class Paging extends Vue {
   }
 
   public clickPage (index) {
-    this.currentIndex = index
+    this.$emit('pageChange', index)
   }
 
-  public clickPrevOrNext (dir) {
-    if (this.currentIndex + dir >= 1 && this.currentIndex + dir <= this.maxPage) {
-      this.currentIndex += dir
-    }
-  }
+  // public clickPrevOrNext (dir) {
+  //   if (this.currentIndex + dir >= 1 && this.currentIndex + dir <= this.maxPage) {
+  //     this.$emit('pageChange', this.currentIndex + dir)
+  //   }
+  // }
 
-  @Watch('currentIndex')
-  public onIndexChanged (val: number, oldVal: number) {
-    this.$emit('pageChange', val)
-  }
+  // @Watch('currentIndex')
+  // public onIndexChanged (val: number, oldVal: number) {
+  //   this.$emit('pageChange', val)
+  // }
 }
 </script>
 

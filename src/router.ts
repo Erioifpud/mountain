@@ -8,6 +8,13 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      name: 'index',
+      redirect: {
+        path: '/home/1'
+      }
+    },
+    {
       path: '/home',
       name: 'home',
       redirect: {

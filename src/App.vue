@@ -52,6 +52,7 @@ html, body {
 
 @media screen and (max-width: $mobile-width) {
   .content {
+    min-height: calc(100% - 2.5rem); 
     padding: 1.5rem 2rem;
     padding-bottom: 2rem;
   }
