@@ -18,7 +18,8 @@
     "semicolon": false,
     "trailing-comma": false,
     "no-console": false,
-    "space-before-function-paren": true
+    "space-before-function-paren": true,
+    "no-namespace":false
   },
   "compilerOptions": {
     "experimentalDecorators": true,

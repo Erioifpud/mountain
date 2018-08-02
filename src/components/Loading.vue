@@ -1,19 +1,16 @@
 <template>
-  <div class="container" :class="{ show: show }">
-      <div v-for="i in 6" :key="`i-${i}`" class="row">
-          <div v-for="j in 6" :key="`j-${j}`" :class="`block block-${i}-${j}`"></div>
-      </div>
+  <div class="container">
+    <div v-for="i in 6" :key="`i-${i}`" class="row">
+      <div v-for="j in 6" :key="`j-${j}`" :class="`block block-${i}-${j}`"></div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class Loading extends Vue {
-  @Prop({ required: true })
-  public show: boolean
-}
+export default class Loading extends Vue {}
 </script>
 
 <style lang="scss" scoped>
@@ -21,11 +18,6 @@ export default class Loading extends Vue {
 
 .container {
   margin: 1rem;
-  display: none;
-}
-
-.show {
-  display: block;
 }
 
 .row {

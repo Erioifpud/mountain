@@ -1,13 +1,17 @@
-export interface Element {
-  [id: number]: string
+namespace Type {
+  export interface Element {
+    [id: number]: string
+  }
+
+  export interface Article {
+    category: Element,
+    content: string,
+    creationTime: number,
+    id: number,
+    tags: Element[],
+    title: string,
+    updateTime: number
+  }
 }
 
-export interface Article {
-  category: Element,
-  content: string,
-  creationTime: number,
-  id: number,
-  tags: Element[],
-  title: string,
-  updateTime: number
-}
+export default Type

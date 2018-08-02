@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <md-content url="https://cciradih.top/about/" attr="content"></md-content>
+  <div class="article-container">
+    <!-- <p class="name">Articles</p> -->
+    <md-content url="https://cciradih.top/articles/"></md-content>
   </div>
 </template>
 
@@ -13,9 +14,10 @@ import MdContent from '@/components/MdContent'
     MdContent
   }
 })
-export default class About extends Vue {}
+export default class Article extends Vue {}
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
+

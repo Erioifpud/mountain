@@ -2,11 +2,23 @@
   <div>
     <div class="article">
       <span class="a-section">
-        <div class="a-title">{{ article.title }}</div>
-        <div class="a-summary">{{ article.content }}</div>
+        <div class="a-title" @click="$emit('clickTitle', article.id)">{{ article.id }}</div>
+        <div class="a-summary">
+          {{ article.content.substr(0, summaryLen) }}
+          <template v-if="article.content">
+            ...
+          </template>
+        </div>
         <div class="a-footer">
           <label class="a-date">{{ createTime(article.creationTime) }}</label>
-          <a class="a-tag" v-for="tag in article.tags" :key="tag.id">{{ tag.name }}</a>
+          <a 
+            class="a-tag" 
+            v-for="tag in article.tags" 
+            :key="tag.id"
+            @click="$emit('clickTag', tag.id)"
+          >
+            {{ tag.name }}
+          </a>
         </div>
       </span>
     </div>
@@ -25,6 +37,9 @@ export default class ArticleSection extends Vue {
   })
   public article: Article
 
+  @Prop({ default: 150 })
+  public summaryLen: number
+
   private createTime (timestamp: number) {
     return moment(timestamp).format('YYYY-MM-DD')
   }
@@ -35,9 +50,7 @@ export default class ArticleSection extends Vue {
 @import '@/assets/css/vars.scss';
 
 .article {
-  // margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  // border-bottom: 1px solid #f2f2f2;
 
   & * {
     margin-bottom: 0.5rem;
