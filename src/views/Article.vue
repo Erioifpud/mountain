@@ -1,6 +1,5 @@
 <template>
-  <div class="article-container">
-    <!-- <p class="name">Articles</p> -->
+  <div class="article-page">
     <md-content url="https://cciradih.top/articles/"></md-content>
   </div>
 </template>
@@ -18,6 +17,11 @@ export default class Article extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/vars.scss';
+@import '@/assets/css/base.scss';
 
+.article-page {
+  @extend %page-template;
+}
 </style>
 

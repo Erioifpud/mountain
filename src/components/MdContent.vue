@@ -22,10 +22,10 @@ export default class MdContent extends Vue {
   public mdit: MarkdownIt = new MarkdownIt()
 
   @Prop({ required: true })
-  public url: string
+  private url: string
 
   @Prop({ default: 'content' })
-  public attr: string
+  private attr: string
 
   get renderedText () {
     if (this.data) {
@@ -49,13 +49,3 @@ export default class MdContent extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/assets/css/vars.scss';
-@import '@/assets/css/base.scss';
-
-.md-container {
-  @extend %main-content
-}
-</style>
-

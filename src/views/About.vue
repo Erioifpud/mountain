@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="about-page">
     <md-content url="https://cciradih.top/about/" attr="content"></md-content>
   </div>
 </template>
@@ -16,6 +16,11 @@ import MdContent from '@/components/MdContent'
 export default class About extends Vue {}
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import '@/assets/css/vars.scss';
+@import '@/assets/css/base.scss';
 
+.about-page {
+  @extend %page-template;
+}
 </style>

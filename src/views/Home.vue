@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home-page">
     <!-- <p class="name">Articles</p> -->
     <div class="article-list">
       <loading v-if="show"></loading>
@@ -8,8 +8,8 @@
         v-for="article in articleSlice" 
         :key="article.id"
         :article="article"
-        @clickTitle="$router.push({ name: 'post', params: { id: $event }})"
-        @clickTag="$router.push({ name: 'tag', params: { id: $event }})"
+        @clickTitle="$router.push({ name: 'post', params: $event })"
+        @clickTag="$router.push({ name: 'tag', params: $event })"
       />
     </div>
     <paging 
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
+import { State, Mutation } from 'vuex-class'
 import Loading from '@/components/Loading'
 import ArticleSection from '@/components/ArticleSection'
 import Paging from '@/components/Paging'
@@ -37,18 +38,20 @@ import Type from '@/interfaces.ts'
 })
 export default class Home extends Vue {
   // public articleList: Article[] = []
-  public show: boolean = true
-  public articlePerPage: number = 5
-  public currentPage: number = 1
+  private show: boolean = true
+  private articlePerPage: number = 5
+  private currentPage: number = 1
+
+  @State
+  private articleList: Type.Article[]
+
+  @Mutation('updateArticleList')
+  private updateArticleList
 
   get articleSlice () {
     const page = this.currentPage - 1
     const start = this.articlePerPage * page
     return this.articleList.slice(start, start + this.articlePerPage)
-  }
-
-  get articleList (): Type.Article[] {
-    return this.$store.state.articleList
   }
 
   get maxPage () {
@@ -62,10 +65,16 @@ export default class Home extends Vue {
   public initPage () {
     let page = parseInt(this.$route.params.page, 10)
     if (page < 1) {
-      this.$router.replace('/home/1')
+      this.$router.replace({
+        name: 'home',
+        params: '1'
+      })
       page = 1
     } else if (page > this.maxPage) {
-      this.$router.replace(`/home/${this.maxPage}`)
+      this.$router.replace({
+        name: 'home',
+        params: `${this.maxPage}`
+      })
       page = this.maxPage
     }
     this.currentPage = page
@@ -73,15 +82,18 @@ export default class Home extends Vue {
 
   @Watch('currentPage')
   public currentPageUpdate (val: number) {
-    this.$router.replace(`/home/${val}`)
+    this.$router.replace({
+      name: 'home',
+      params: `${val}`
+    })
   }
 
   private mounted () {
     if (this.articleList.length === 0) {
       this.$ax.get('https://cciradih.top/articles/')
         .then((r: any) => {
-          // this.articleList = r.data
-          this.$store.commit('updateArticleList', r.data)
+          // this.$store.commit('updateArticleList', r.data)
+          this.updateArticleList(r.data)
           this.show = false
           this.initPage()
         })
@@ -97,7 +109,7 @@ export default class Home extends Vue {
 @import '@/assets/css/base.scss';
 
 .article-list {
-  @extend %main-content;
+  @extend %page-template;
 }
 
 .article-section {

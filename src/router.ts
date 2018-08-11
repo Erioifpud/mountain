@@ -3,28 +3,29 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Article from './views/Article.vue';
 import About from './views/About.vue';
+import Tag from './views/Tag.vue';
 
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'index',
+    //   redirect: {
+    //     path: '/home/1'
+    //   }
+    // },
     {
       path: '/',
-      name: 'index',
-      redirect: {
-        path: '/home/1'
-      }
-    },
-    {
-      path: '/home',
       name: 'home',
       redirect: {
-        path: '/home/1'
+        path: '/1'
       }
     },
     {
-      path: '/home/:page',
+      path: '/:page',
       name: 'home-page',
       component: Home,
     },
@@ -42,5 +43,10 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       // component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
+    {
+      path: '/tag/:id',
+      name: 'tag',
+      component: Tag
+    }
   ],
 });

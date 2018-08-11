@@ -2,7 +2,7 @@
   <div>
     <div class="article">
       <span class="a-section">
-        <div class="a-title" @click="$emit('clickTitle', article.id)">{{ article.id }}</div>
+        <div class="a-title" @click="$emit('clickTitle', article)">{{ article.title }}</div>
         <div class="a-summary">
           {{ article.content.substr(0, summaryLen) }}
           <template v-if="article.content">
@@ -15,7 +15,7 @@
             class="a-tag" 
             v-for="tag in article.tags" 
             :key="tag.id"
-            @click="$emit('clickTag', tag.id)"
+            @click="$emit('clickTag', tag)"
           >
             {{ tag.name }}
           </a>
