@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <span class="left">
-      <label class="title">{{ title.toUpperCase().slice(0, 10) }}</label>
+      <router-link to="/home/1" class="title">{{ title.toUpperCase().slice(0, 10) }}</router-link>
     </span>
     <span class="nav">
       <template v-for="router in routerData">
@@ -9,7 +9,6 @@
           :to="router.path" 
           :key="router.name" 
           class="router"
-          exact
         >
           {{ router.name }}
         </router-link>
@@ -30,7 +29,7 @@ export default class Header extends Vue {
   public routerData = [
     {
       name: 'home',
-      path: '/'
+      path: '/home'
     },
     {
       name: 'about',
@@ -56,6 +55,7 @@ export default class Header extends Vue {
     font-size: 1.5rem;
     font-weight: 500;
     color: $color8;
+    text-decoration: none;
   }
 
   img {

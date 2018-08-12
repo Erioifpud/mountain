@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import Loading from '@/components/Loading'
 import ArticleSection from '@/components/ArticleSection'
 import Paging from '@/components/Paging'
@@ -46,6 +46,10 @@ export default class Tag extends Vue {
     return this.articleList.slice(start, start + this.articlePerPage)
   }
 
+  get maxPage () {
+    return Math.ceil(this.articleList.length / this.articlePerPage)
+  }
+
   private mounted () {
     let params: any = this.$route.params
     this.$ax.get(`https://cciradih.top/tags/${params.id}/`)
@@ -54,8 +58,40 @@ export default class Tag extends Vue {
         // this.updateArticleList(r.data)
         this.articleList = r.data
         this.show = false
-        // this.initPage()
+        this.initPage()
       })
+  }
+
+   private initPage () {
+    let page = parseInt(this.$route.params.id, 10)
+    if (page < 1) {
+      this.$router.replace({
+        name: 'tag',
+        params: {
+          id: '1'
+        }
+      })
+      page = 1
+    } else if (page > this.maxPage) {
+      this.$router.replace({
+        name: 'tag',
+        params: {
+          id: `${this.maxPage}`
+        }
+      })
+      page = this.maxPage
+    }
+    this.currentPage = page
+  }
+
+  @Watch('currentPage')
+  private currentPageUpdate (val: number) {
+    this.$router.replace({
+      name: 'tag',
+      params: {
+        id: `${val}`
+      }
+    })
   }
 }
 </script>

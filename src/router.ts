@@ -18,14 +18,14 @@ export default new Router({
     //   }
     // },
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       redirect: {
-        path: '/1'
+        path: '/home/1'
       }
     },
     {
-      path: '/:page',
+      path: '/home/:page',
       name: 'home-page',
       component: Home,
     },

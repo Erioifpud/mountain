@@ -58,22 +58,26 @@ export default class Home extends Vue {
     return Math.ceil(this.articleList.length / this.articlePerPage)
   }
 
-  public updatePage (val: number) {
+  private updatePage (val: number) {
     this.currentPage = val
   }
 
-  public initPage () {
+  private initPage () {
     let page = parseInt(this.$route.params.page, 10)
     if (page < 1) {
       this.$router.replace({
-        name: 'home',
-        params: '1'
+        name: 'home-page',
+        params: {
+          page: '1'
+        }
       })
       page = 1
     } else if (page > this.maxPage) {
       this.$router.replace({
-        name: 'home',
-        params: `${this.maxPage}`
+        name: 'home-page',
+        params: {
+          page: `${this.maxPage}`
+        }
       })
       page = this.maxPage
     }
@@ -81,10 +85,12 @@ export default class Home extends Vue {
   }
 
   @Watch('currentPage')
-  public currentPageUpdate (val: number) {
+  private currentPageUpdate (val: number) {
     this.$router.replace({
-      name: 'home',
-      params: `${val}`
+      name: 'home-page',
+      params: {
+        page: `${val}`
+      }
     })
   }
 
